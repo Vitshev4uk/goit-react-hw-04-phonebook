@@ -3,24 +3,20 @@ import ContactForm from './ContactForm/ContactForm';
 import Filter from './Filter/Filter';
 import ContactList from './ContactList/ContactList';
 
-
+const locStorContacts = JSON.parse(localStorage.getItem('All contacts'));
 function App() {
-  const [contacts, setContacts] = React.useState([]);
+  const [contacts, setContacts] = React.useState([] || [locStorContacts]);
   const [filter, setFilter] = React.useState('');
-  const [prevContacts] = React.useState(contacts)
 
   React.useEffect(() => {
-    const locStorContacts = JSON.parse(localStorage.getItem('All contacts'));
     if (locStorContacts) {
       setContacts(locStorContacts);
     }
   }, []);
 
   React.useEffect(() => {
-    if (contacts !== prevContacts) {
-      localStorage.setItem('All contacts', JSON.stringify(contacts))
-    }
-  }, [contacts, prevContacts]);
+    localStorage.setItem('All contacts', JSON.stringify(contacts));
+  }, [contacts]);
 
   const removeContact = id => {
     const deletedContact = contacts.filter(contact => contact.id !== id);
